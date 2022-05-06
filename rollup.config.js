@@ -519,6 +519,45 @@ function remixCloudflare() {
 }
 
 /** @returns {import("rollup").RollupOptions[]} */
+function remixDeno() {
+  let sourceDir = "packages/remix-deno";
+  let outputDir = getOutputDir("@remix-run/deno");
+  let version = getVersion(sourceDir);
+
+  return [
+    {
+      external(id) {
+        return isBareModuleId(id);
+      },
+      input: `${sourceDir}/index.ts`,
+      output: {
+        banner: createBanner("@remix-run/deno", version),
+        dir: outputDir,
+        format: "cjs",
+        preserveModules: true,
+        exports: "named",
+      },
+      plugins: [
+        babel({
+          babelHelpers: "bundled",
+          exclude: /node_modules/,
+          extensions: [".ts", ".tsx"],
+        }),
+        nodeResolve({ extensions: [".ts", ".tsx"] }),
+        copy({
+          targets: [
+            { src: `LICENSE.md`, dest: outputDir },
+            { src: `${sourceDir}/package.json`, dest: outputDir },
+            { src: `${sourceDir}/README.md`, dest: outputDir },
+          ],
+        }),
+        copyToPlaygrounds(),
+      ],
+    },
+  ];
+}
+
+/** @returns {import("rollup").RollupOptions[]} */
 function remixCloudflareWorkers() {
   let sourceDir = "packages/remix-cloudflare-workers";
   let outputDir = getOutputDir("@remix-run/cloudflare-workers");
@@ -860,6 +899,7 @@ export default function rollup(options) {
     ...remixCloudflare(options),
     ...remixCloudflarePages(options),
     ...remixCloudflareWorkers(options),
+    ...remixDeno(options),
     ...remixServerAdapters(options),
     ...remixReact(options),
     ...remixServe(options),

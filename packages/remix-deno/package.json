@@ -12,5 +12,9 @@
   "bugs": {
     "url": "https://github.com/remix-run/remix/issues"
   },
-  "sideEffects": false
+  "sideEffects": false,
+  "dependencies": {
+    "@remix-run/server-runtime": "^1.4.3",
+    "mime": "^3.0.0"
+  }
 }

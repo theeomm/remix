@@ -1,0 +1,7 @@
+{
+  "//": "This import map is used solely for the denoland.vscode-deno extension.",
+  "imports": {
+    "mime": "https://esm.sh/mime@3.0.0",
+    "@remix-run/server-runtime": "https://esm.sh/@remix-run/server-runtime@1.4.3"
+  }
+}
